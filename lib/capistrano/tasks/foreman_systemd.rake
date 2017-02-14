@@ -14,7 +14,7 @@ namespace :foreman_systemd do
           set :foreman_systemd_log, -> { shared_path.join('log') }
           set :foreman_systemd_port, 3000 # default is not set
           set :foreman_systemd_user, 'www-data' # default is not set
-          set :foreman_systemd_executable, 'foreman' # default is foreman. Use this if you need exact executable paths
+          set :foreman_systemd_executable, 'foreman' # default is foreman. Use this if you need exact executables
     DESC
 
   task :setup do
@@ -48,13 +48,11 @@ namespace :foreman_systemd do
     end
   end
 
-
   desc 'Export the Procfile to another process management format'
   task :export do
     on roles fetch(:foreman_systemd_roles) do |server|
       execute :mkdir, '-p', fetch(:foreman_systemd_export_path) unless test "[ -d #{fetch(:foreman_systemd_export_path)} ]"
       within fetch(:foreman_systemd_target_path, release_path) do
-
         options = {
           app: fetch(:foreman_systemd_app),
           log: fetch(:foreman_systemd_log)
@@ -64,10 +62,15 @@ namespace :foreman_systemd do
         options[:port] = fetch(:foreman_systemd_port) if fetch(:foreman_systemd_port)
         options[:user] = fetch(:foreman_systemd_user) if fetch(:foreman_systemd_user)
 
+<<<<<<< HEAD
         as "root" do
           execute "#{fetch(:foreman_systemd_executable)}, 'export', fetch(:foreman_systemd_export_format), fetch(:foreman_systemd_export_path),
             options.map{ |k, v| "--#{k}='#{v}'" }, fetch(:foreman_systemd_flags)
         end
+=======
+        sudo fetch(:foreman_systemd_executable).to_s, 'export', fetch(:foreman_systemd_export_format), fetch(:foreman_systemd_export_path),
+             options.map { |k, v| "--#{k}='#{v}'" }, fetch(:foreman_systemd_flags)
+>>>>>>> fix typo
       end
     end
   end
@@ -98,7 +101,6 @@ namespace :foreman_systemd do
       end
     end
   end
-
 end
 
 namespace :load do
