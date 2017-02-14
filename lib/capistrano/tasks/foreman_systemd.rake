@@ -14,6 +14,7 @@ namespace :foreman_systemd do
           set :foreman_systemd_log, -> { shared_path.join('log') }
           set :foreman_systemd_port, 3000 # default is not set
           set :foreman_systemd_user, 'www-data' # default is not set
+          set :foreman_systemd_executable, 'foreman' # default is foreman. Use this if you need exact executable paths
     DESC
 
   task :setup do
@@ -64,7 +65,7 @@ namespace :foreman_systemd do
         options[:user] = fetch(:foreman_systemd_user) if fetch(:foreman_systemd_user)
 
         as "root" do
-          execute :foreman, 'export', fetch(:foreman_systemd_export_format), fetch(:foreman_systemd_export_path),
+          execute "#{fetch(:foreman_systemd_executable)}, 'export', fetch(:foreman_systemd_export_format), fetch(:foreman_systemd_export_path),
             options.map{ |k, v| "--#{k}='#{v}'" }, fetch(:foreman_systemd_flags)
         end
       end
@@ -108,5 +109,6 @@ namespace :load do
     set :foreman_systemd_flags, ''
     set :foreman_systemd_app, -> { fetch(:application) }
     set :foreman_systemd_log, -> { shared_path.join('log') }
+    set :foreman_systemd_executable, 'foreman'
   end
 end
