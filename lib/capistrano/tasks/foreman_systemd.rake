@@ -63,7 +63,7 @@ namespace :foreman_systemd do
         options[:user] = fetch(:foreman_systemd_user) if fetch(:foreman_systemd_user)
 
         as "root" do
-          execute "#{fetch(:foreman_systemd_executable)}, 'export', fetch(:foreman_systemd_export_format), fetch(:foreman_systemd_export_path),
+          execute "#{fetch(:foreman_systemd_executable)}", 'export', fetch(:foreman_systemd_export_format), fetch(:foreman_systemd_export_path),
             options.map{ |k, v| "--#{k}='#{v}'" }, fetch(:foreman_systemd_flags)
         end
       end
