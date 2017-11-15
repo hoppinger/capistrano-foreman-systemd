@@ -62,15 +62,10 @@ namespace :foreman_systemd do
         options[:port] = fetch(:foreman_systemd_port) if fetch(:foreman_systemd_port)
         options[:user] = fetch(:foreman_systemd_user) if fetch(:foreman_systemd_user)
 
-<<<<<<< HEAD
         as "root" do
           execute "#{fetch(:foreman_systemd_executable)}, 'export', fetch(:foreman_systemd_export_format), fetch(:foreman_systemd_export_path),
             options.map{ |k, v| "--#{k}='#{v}'" }, fetch(:foreman_systemd_flags)
         end
-=======
-        sudo fetch(:foreman_systemd_executable).to_s, 'export', fetch(:foreman_systemd_export_format), fetch(:foreman_systemd_export_path),
-             options.map { |k, v| "--#{k}='#{v}'" }, fetch(:foreman_systemd_flags)
->>>>>>> fix typo
       end
     end
   end
