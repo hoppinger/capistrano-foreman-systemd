@@ -21,9 +21,7 @@ namespace :foreman_systemd do
     invoke :'foreman_systemd:export'
 
     on roles fetch(:foreman_systemd_roles) do
-      as "root" do
-        execute :systemctl, "daemon-reload"
-      end
+      sudo :systemctl, "daemon-reload"
     end
 
     invoke :'foreman_systemd:enable'
@@ -33,18 +31,14 @@ namespace :foreman_systemd do
   desc 'Enables service in systemd'
   task :enable do
     on roles fetch(:foreman_systemd_roles) do
-      as "root" do
-        execute :systemctl, "enable #{fetch(:foreman_systemd_app)}.target"
-      end
+      sudo :systemctl, "enable #{fetch(:foreman_systemd_app)}.target"
     end
   end
 
   desc 'Disables service in systemd'
   task :disable do
     on roles fetch(:foreman_systemd_roles) do
-      as "root" do
-        execute :systemctl, "disable #{fetch(:foreman_systemd_app)}.target"
-      end
+      sudo :systemctl, "disable #{fetch(:foreman_systemd_app)}.target"
     end
   end
 
@@ -71,27 +65,21 @@ namespace :foreman_systemd do
   desc 'Start the application services'
   task :start do
     on roles fetch(:foreman_systemd_roles) do
-      as "root" do
-        execute :systemctl, "start #{fetch(:foreman_systemd_app)}.target"
-      end
+      sudo :systemctl, "start #{fetch(:foreman_systemd_app)}.target"
     end
   end
 
   desc 'Stop the application services'
   task :stop do
     on roles fetch(:foreman_systemd_roles) do
-      as "root" do
-        execute :systemctl, "stop #{fetch(:foreman_systemd_app)}.target"
-      end
+      sudo :systemctl, "stop #{fetch(:foreman_systemd_app)}.target"
     end
   end
 
   desc 'Restart the application services'
   task :restart do
     on roles fetch(:foreman_systemd_roles) do
-      as "root" do
-        execute :systemctl, "restart #{fetch(:foreman_systemd_app)}.target"
-      end
+      sudo :systemctl, "restart #{fetch(:foreman_systemd_app)}.target"
     end
   end
 end
